@@ -41,7 +41,7 @@ const SideBarItemDiv = styled.button`
 
 const SideBarLI = styled.li`
   padding: 0em 1em;
-  white-space: nowrap;
+  text-align: left;
 `;
 
 const Image = styled.img`
@@ -70,14 +70,12 @@ interface Props {
 
 const SideNavBar = ({ darkMode }: Props) => {
   interface Response {
-    data: unknown[];
+    data: unknown;
   }
 
-  // interface Data {
-  //   results: any[];
-  // }
   const [response, setResponse] = useState<Response>();
   const [error, setError] = useState<String>("");
+  const [results, setResults] = useState([]);
   // const [data, setData] = useState<Data>();
 
   useEffect(() => {
@@ -85,11 +83,13 @@ const SideNavBar = ({ darkMode }: Props) => {
     //if statement prevents repeated, unintentional response
     if (!response?.data) {
       request
-        .then((response) => {
+        .then((response: Response) => {
           setResponse(response);
+          const newResults = (response.data as { results: never[] }).results;
+          setResults(newResults);
           // setData(response.data);
         })
-        .catch((err) => setError(err.message));
+        .catch((err: Error) => setError(err.message));
     }
   }, [response]);
 
@@ -103,7 +103,7 @@ const SideNavBar = ({ darkMode }: Props) => {
       <SideNav style={darkMode ? darkModeBackground : lightModeBackground}>
         <SideNavHeader>Genres</SideNavHeader>
         <SideBarUL>
-          {response?.data?.results.map((item: Genre) => (
+          {results.map((item: Genre) => (
             <SideBarItemDiv onClick={() => handleGenreSelect(item)}>
               <Image src={item.image_background} />
               <SideBarLI key={item.id}>{item.name}</SideBarLI>
