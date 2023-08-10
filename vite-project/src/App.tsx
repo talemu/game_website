@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -9,9 +9,14 @@ function App() {
   const [darkModeToggle, setDarkModeToggle] = useState(false);
   console.log(darkModeToggle);
 
+  useEffect(() => {
+    console.log("Found");
+  }, [darkModeToggle]);
+
   return (
     <>
       <NavBar
+        currentMode={darkModeToggle}
         onSelectItem={() => {
           setDarkModeToggle(!darkModeToggle);
         }}

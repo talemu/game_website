@@ -3,3 +3,6 @@
   margin: 0 auto;
   text-align: center;
 }
+html, body, #app, #app>div {
+  height: 100%
+}

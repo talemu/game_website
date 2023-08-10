@@ -14,7 +14,6 @@ const Nav = styled.div`
 `;
 
 const WebsiteLogo = styled.div`
-  background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,11 +44,31 @@ const SearchIconDiv = styled.div`
 
 const Button = styled.button``;
 
+//color styles
+const lightModeBackground = {
+  "background-color": "white",
+};
+
+const darkModeBackground = {
+  "background-color": "#35155D",
+};
+
+const lightModeColor = {
+  color: "black",
+  "font-color": "black",
+};
+
+const darkModeColor = {
+  color: "white",
+  "font-color": "white",
+};
+
 interface Props {
+  currentMode: Boolean;
   onSelectItem: () => void;
 }
 
-const NavBar = ({ onSelectItem }: Props) => {
+const NavBar = ({ currentMode, onSelectItem }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   //Function to handle Search Change
 
@@ -64,9 +83,12 @@ const NavBar = ({ onSelectItem }: Props) => {
   };
 
   return (
-    <Nav>
+    <Nav style={currentMode ? darkModeBackground : lightModeBackground}>
       <WebsiteLogo onClick={() => (location.href = "/")}>
-        <StarIcon boxSize={5} />
+        <StarIcon
+          boxSize={5}
+          style={currentMode ? darkModeColor : lightModeColor}
+        />
       </WebsiteLogo>
       <NavSearch>
         <InputGroup width="95%">
