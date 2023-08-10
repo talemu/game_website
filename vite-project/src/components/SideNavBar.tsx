@@ -1,8 +1,11 @@
-import React from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import genresService, { Genre } from "../services/genresService";
 
+//styled components
 const SideNav = styled.div`
-  background-color: red;
+  backgroundcolor: red;
   font-family: Copperplate;
   height: 100%;
   width: 12em;
@@ -14,17 +17,51 @@ const SideNavHeader = styled.div`
   text-align: left;
 `;
 
+const SideBarUL = styled.div`
+  list-style-type: none;
+  text-align: left;
+  padding: 0em 2em;
+`;
+
+const SideBarItemDiv = styled.button`
+  display: flex;
+  padding: 0.25em 0em;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+    font-weight: bold;
+    border: none;
+  }
+
+  &:focus-visible {
+    border-color: none;
+  }
+`;
+
+const SideBarLI = styled.li`
+  padding: 0em 1em;
+  white-space: nowrap;
+`;
+
+const Image = styled.img`
+  width: 2em;
+  height: 2em;
+  object-fit: cover;
+  border-radius: 0.25em;
+`;
+
 //color styles
 const darkModeBackground = {
-  "background-color": "white",
+  backgroundColor: "white",
   color: "black",
-  "font-color": "black",
+  fontColor: "black",
 };
 
 const lightModeBackground = {
-  "background-color": "#35155D",
+  backgroundColor: "#35155D",
   color: "white",
-  "font-color": "white",
+  fontColor: "white",
 };
 
 interface Props {
@@ -32,10 +69,47 @@ interface Props {
 }
 
 const SideNavBar = ({ darkMode }: Props) => {
+  interface Response {
+    data: unknown[];
+  }
+
+  // interface Data {
+  //   results: any[];
+  // }
+  const [response, setResponse] = useState<Response>();
+  const [error, setError] = useState<String>("");
+  // const [data, setData] = useState<Data>();
+
+  useEffect(() => {
+    const { request, cancel } = genresService.getAll();
+    //if statement prevents repeated, unintentional response
+    if (!response?.data) {
+      request
+        .then((response) => {
+          setResponse(response);
+          // setData(response.data);
+        })
+        .catch((err) => setError(err.message));
+    }
+  }, [response]);
+
+  const handleGenreSelect = (item: Genre) => {
+    console.log(item);
+  };
+
   return (
     <>
+      {error !== "" ? <p>{error}</p> : <div></div>}
       <SideNav style={darkMode ? darkModeBackground : lightModeBackground}>
         <SideNavHeader>Genres</SideNavHeader>
+        <SideBarUL>
+          {response?.data?.results.map((item: Genre) => (
+            <SideBarItemDiv onClick={() => handleGenreSelect(item)}>
+              <Image src={item.image_background} />
+              <SideBarLI key={item.id}>{item.name}</SideBarLI>
+            </SideBarItemDiv>
+          ))}
+        </SideBarUL>
       </SideNav>
     </>
   );
