@@ -2,6 +2,10 @@ import axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import genresService, { Genre } from "../services/genresService";
+import {
+  darkModeBackground,
+  lightModeBackground,
+} from "../styles/lightAndDarkColors";
 
 //styled components
 const SideNav = styled.div`
@@ -51,26 +55,13 @@ const Image = styled.img`
   border-radius: 0.25em;
 `;
 
-//color styles
-const darkModeBackground = {
-  backgroundColor: "white",
-  color: "black",
-  fontColor: "black",
-};
-
-const lightModeBackground = {
-  backgroundColor: "#35155D",
-  color: "white",
-  fontColor: "white",
-};
-
 interface Props {
   darkMode: Boolean;
 }
 
 const SideNavBar = ({ darkMode }: Props) => {
   interface Response {
-    data: unknown;
+    data: any;
   }
 
   const [response, setResponse] = useState<Response>();
@@ -104,9 +95,12 @@ const SideNavBar = ({ darkMode }: Props) => {
         <SideNavHeader>Genres</SideNavHeader>
         <SideBarUL>
           {results.map((item: Genre) => (
-            <SideBarItemDiv onClick={() => handleGenreSelect(item)}>
+            <SideBarItemDiv
+              key={item.id}
+              onClick={() => handleGenreSelect(item)}
+            >
               <Image src={item.image_background} />
-              <SideBarLI key={item.id}>{item.name}</SideBarLI>
+              <SideBarLI>{item.name}</SideBarLI>
             </SideBarItemDiv>
           ))}
         </SideBarUL>

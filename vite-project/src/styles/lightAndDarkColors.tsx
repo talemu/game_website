@@ -1,17 +1,14 @@
-const lightModeBackground = {
-  "background-color": "white",
-};
+import react from "react";
 
-const darkModeBackground = {
-  "background-color": "#35155D",
-};
-
-const lightModeColor = {
+//color styles
+export const darkModeBackground = {
+  backgroundColor: "grey",
   color: "black",
-  "font-color": "black",
+  fontColor: "black",
 };
 
-const darkModeColor = {
+export const lightModeBackground = {
+  backgroundColor: "#35155D",
   color: "white",
-  "font-color": "white",
+  fontColor: "white",
 };

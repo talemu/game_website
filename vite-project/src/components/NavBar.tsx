@@ -3,6 +3,10 @@ import { Input, InputGroup, Switch } from "@chakra-ui/react";
 import { styled } from "styled-components";
 import "bootstrap/dist/css/bootstrap.css";
 import { SearchIcon, StarIcon } from "@chakra-ui/icons";
+import {
+  darkModeBackground,
+  lightModeBackground,
+} from "../styles/lightAndDarkColors";
 
 //styled components
 const Nav = styled.div`
@@ -43,19 +47,6 @@ const SearchIconDiv = styled.div`
 `;
 
 const Button = styled.button``;
-
-//color styles
-const darkModeBackground = {
-  backgroundColor: "white",
-  color: "black",
-  fontColor: "black",
-};
-
-const lightModeBackground = {
-  backgroundColor: "#35155D",
-  color: "white",
-  fontColor: "white",
-};
 
 interface Props {
   darkMode: Boolean;
