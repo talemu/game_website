@@ -46,15 +46,15 @@ const Button = styled.button``;
 
 //color styles
 const darkModeBackground = {
-  "background-color": "white",
+  backgroundColor: "white",
   color: "black",
-  "font-color": "black",
+  fontColor: "black",
 };
 
 const lightModeBackground = {
-  "background-color": "#35155D",
+  backgroundColor: "#35155D",
   color: "white",
-  "font-color": "white",
+  fontColor: "white",
 };
 
 interface Props {

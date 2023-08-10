@@ -8,6 +8,8 @@ import SideNavBar from "./components/SideNavBar";
 function App() {
   const [count, setCount] = useState(0);
   const [darkModeToggle, setDarkModeToggle] = useState(true);
+  // const apiUrlGenres = "https://api.rawg.io/api/genres";
+  // const apiKey = "82c5323ca1124feab62f4b03929584c3";
 
   useEffect(() => {}, [darkModeToggle]);
 
