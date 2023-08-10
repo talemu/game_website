@@ -31,7 +31,7 @@ const ModeDiv = styled.div`
   width: 10em;
   display: flex;
   font-size: 1em;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Copperplate;
   font-weight: bold;
   white-space: nowrap;
   flex-direction: column;
@@ -45,30 +45,24 @@ const SearchIconDiv = styled.div`
 const Button = styled.button``;
 
 //color styles
-const lightModeBackground = {
-  "background-color": "white",
-};
-
 const darkModeBackground = {
-  "background-color": "#35155D",
-};
-
-const lightModeColor = {
+  "background-color": "white",
   color: "black",
   "font-color": "black",
 };
 
-const darkModeColor = {
+const lightModeBackground = {
+  "background-color": "#35155D",
   color: "white",
   "font-color": "white",
 };
 
 interface Props {
-  currentMode: Boolean;
+  darkMode: Boolean;
   onSelectItem: () => void;
 }
 
-const NavBar = ({ currentMode, onSelectItem }: Props) => {
+const NavBar = ({ darkMode, onSelectItem }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   //Function to handle Search Change
 
@@ -83,12 +77,9 @@ const NavBar = ({ currentMode, onSelectItem }: Props) => {
   };
 
   return (
-    <Nav style={currentMode ? darkModeBackground : lightModeBackground}>
+    <Nav style={darkMode ? darkModeBackground : lightModeBackground}>
       <WebsiteLogo onClick={() => (location.href = "/")}>
-        <StarIcon
-          boxSize={5}
-          style={currentMode ? darkModeColor : lightModeColor}
-        />
+        <StarIcon boxSize={5} />
       </WebsiteLogo>
       <NavSearch>
         <InputGroup width="95%">
