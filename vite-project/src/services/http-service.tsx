@@ -21,6 +21,10 @@ class HTTPService {
   }
 }
 
+export interface Response {
+  data: any;
+}
+
 const create = (endpoint: string) => new HTTPService(endpoint);
 
 export default create;

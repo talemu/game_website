@@ -2,6 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import genresService, { Genre } from "../services/genresService";
+import {
+  EmptyDiv,
+  darkModeBackground,
+  lightModeBackground,
+} from "../styles/themes";
+import { Response } from "../services/http-service";
 
 //styled components
 const SideNav = styled.div`
@@ -41,7 +47,7 @@ const SideBarItemDiv = styled.button`
 
 const SideBarLI = styled.li`
   padding: 0em 1em;
-  white-space: nowrap;
+  text-align: left;
 `;
 
 const Image = styled.img`
@@ -51,33 +57,20 @@ const Image = styled.img`
   border-radius: 0.25em;
 `;
 
-//color styles
-const darkModeBackground = {
-  backgroundColor: "white",
-  color: "black",
-  fontColor: "black",
-};
-
-const lightModeBackground = {
-  backgroundColor: "#35155D",
-  color: "white",
-  fontColor: "white",
-};
-
 interface Props {
   darkMode: Boolean;
+  genreCallback: any;
 }
 
-const SideNavBar = ({ darkMode }: Props) => {
+const SideNavBar = ({ darkMode, genreCallback }: Props) => {
   interface Response {
-    data: unknown[];
+    data: any;
   }
 
-  // interface Data {
-  //   results: any[];
-  // }
   const [response, setResponse] = useState<Response>();
   const [error, setError] = useState<String>("");
+  const [results, setResults] = useState([]);
+  const [show, setShow] = useState(false);
   // const [data, setData] = useState<Data>();
 
   useEffect(() => {
@@ -85,32 +78,46 @@ const SideNavBar = ({ darkMode }: Props) => {
     //if statement prevents repeated, unintentional response
     if (!response?.data) {
       request
-        .then((response) => {
+        .then((response: Response) => {
           setResponse(response);
+          const newResults = (response.data as { results: never[] }).results;
+          setResults(newResults);
+          setShow(true);
           // setData(response.data);
         })
-        .catch((err) => setError(err.message));
+        .catch((err: Error) => setError(err.message));
+      console.log(darkMode);
     }
   }, [response]);
 
   const handleGenreSelect = (item: Genre) => {
-    console.log(item);
+    const data = item;
+    genreCallback(data);
   };
 
   return (
     <>
-      {error !== "" ? <p>{error}</p> : <div></div>}
-      <SideNav style={darkMode ? darkModeBackground : lightModeBackground}>
-        <SideNavHeader>Genres</SideNavHeader>
-        <SideBarUL>
-          {response?.data?.results.map((item: Genre) => (
-            <SideBarItemDiv onClick={() => handleGenreSelect(item)}>
-              <Image src={item.image_background} />
-              <SideBarLI key={item.id}>{item.name}</SideBarLI>
-            </SideBarItemDiv>
-          ))}
-        </SideBarUL>
-      </SideNav>
+      {show ? (
+        <div>
+          {error !== "" ? <p>{error}</p> : <div></div>}
+          <SideNav style={darkMode ? darkModeBackground : lightModeBackground}>
+            <SideNavHeader>Genres</SideNavHeader>
+            <SideBarUL>
+              {results.map((item: Genre) => (
+                <SideBarItemDiv
+                  key={item.id}
+                  onClick={() => handleGenreSelect(item)}
+                >
+                  <Image src={item.image_background} />
+                  <SideBarLI>{item.name}</SideBarLI>
+                </SideBarItemDiv>
+              ))}
+            </SideBarUL>
+          </SideNav>
+        </div>
+      ) : (
+        <EmptyDiv></EmptyDiv>
+      )}
     </>
   );
 };
