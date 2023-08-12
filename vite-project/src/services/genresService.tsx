@@ -6,6 +6,4 @@ export interface Genre {
   image_background: string;
 }
 
-export interface data {}
-
 export default create("/genres");

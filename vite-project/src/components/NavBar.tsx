@@ -3,10 +3,7 @@ import { Input, InputGroup, Switch } from "@chakra-ui/react";
 import { styled } from "styled-components";
 import "bootstrap/dist/css/bootstrap.css";
 import { SearchIcon, StarIcon } from "@chakra-ui/icons";
-import {
-  darkModeBackground,
-  lightModeBackground,
-} from "../styles/lightAndDarkColors";
+import { darkModeBackground, lightModeBackground } from "../styles/themes";
 
 //styled components
 const Nav = styled.div`
