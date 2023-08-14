@@ -47,10 +47,11 @@ const Button = styled.button``;
 
 interface Props {
   darkMode: Boolean;
+  searchQueryCallback: any;
   onSelectItem: () => void;
 }
 
-const NavBar = ({ darkMode, onSelectItem }: Props) => {
+const NavBar = ({ darkMode, onSelectItem, searchQueryCallback }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   //Function to handle Search Change
 
@@ -61,7 +62,7 @@ const NavBar = ({ darkMode, onSelectItem }: Props) => {
   //Function to handle Search Submit
 
   const handleSearch = () => {
-    console.log(searchQuery);
+    searchQueryCallback(searchQuery);
   };
 
   return (
@@ -73,6 +74,9 @@ const NavBar = ({ darkMode, onSelectItem }: Props) => {
         <InputGroup width="95%">
           <Input
             onChange={(event) => handleSearchChange(event)}
+            onKeyDown={(event) => {
+              event.key == "Enter" ? handleSearch() : null;
+            }}
             id="search"
             placeholder="Search"
             width="100%"

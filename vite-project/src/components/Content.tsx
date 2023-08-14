@@ -30,37 +30,30 @@ const SelectsDiv = styled.div`
   display: flex;
 `;
 
-const SelectPlatform = styled.select`
-  width: 10em;
-  height: 2em;
-  border-radius: 0.25em;
-  background: adjusted by mode;
-`;
-
-const SelectOrder = styled.select`
-  width: 12em;
-  height: 2em;
-  border-radius: 0.25em;
-  background: adjusted by mode;
-`;
-
 const SelectDiv = styled.div`
-  padding: 0em 1em;
+  padding: 0em 1em 0em 0em;
+  width: 15em;
 `;
+
+const SelectOption = styled.option``;
 
 interface Props {
   darkMode: Boolean;
+  searchQuery: string;
   genreData: {
-    genreId: number;
-    genreName: string;
+    id: number;
+    name: string;
+    games: any[];
   };
 }
 
-const Content = ({ darkMode, genreData }: Props) => {
+const Content = ({ darkMode, searchQuery, genreData }: Props) => {
   const [platformsResponse, setplatformsResponse] =
     useState<PlatformParentItem[]>();
   const [error, setError] = useState<String>("");
   const [show, setShow] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState("all");
+  console.log(searchQuery);
 
   useEffect(() => {
     const { request, cancel } = platformsService.getAll();
@@ -78,7 +71,7 @@ const Content = ({ darkMode, genreData }: Props) => {
   }, [darkMode]);
 
   const handleSelectedPlatform = (item: string) => {
-    console.log(item);
+    setSelectedPlatform(item);
   };
 
   return (
@@ -86,35 +79,60 @@ const Content = ({ darkMode, genreData }: Props) => {
       {show ? (
         <ContentDiv style={darkMode ? darkModeBackground : lightModeBackground}>
           <Header>
-            {genreData ? <span>{genreData.genreName} </span> : null}Games
+            {genreData ? <span>{genreData.name} </span> : null}Games
           </Header>
           <SelectsDiv>
-            <SelectPlatform
-              onChange={(item) => handleSelectedPlatform(item.target.value)}
-              style={
-                darkMode ? darkModeBackgroundSelect : lightModeBackgroundSelect
-              }
-            >
-              <option value="all">All Platforms</option>
-              {platformsResponse?.map((item: PlatformParentItem) => (
-                <option key={item.id} value={item.slug}>
-                  {item.name}
-                </option>
-              ))}
-            </SelectPlatform>
             <SelectDiv>
-              <SelectOrder
+              <Select
+                onChange={(item) => handleSelectedPlatform(item.target.value)}
                 style={
                   darkMode
                     ? darkModeBackgroundSelect
                     : lightModeBackgroundSelect
                 }
+                size="sm"
               >
-                <option value="relevance">Order by: Relevance</option>
-              </SelectOrder>
+                <SelectOption value="all">All Platforms</SelectOption>
+                {platformsResponse?.map((item: PlatformParentItem) => (
+                  <SelectOption
+                    key={item.id}
+                    value={item.slug}
+                    style={
+                      darkMode ? darkModeBackgroundSelect : lightModeBackground
+                    }
+                  >
+                    {item.name}
+                  </SelectOption>
+                ))}
+              </Select>
+            </SelectDiv>
+            <SelectDiv>
+              <Select
+                style={
+                  darkMode
+                    ? darkModeBackgroundSelect
+                    : lightModeBackgroundSelect
+                }
+                size="sm"
+              >
+                <SelectOption
+                  value="relevance"
+                  style={
+                    darkMode
+                      ? darkModeBackgroundSelect
+                      : lightModeBackgroundSelect
+                  }
+                >
+                  Order by: Relevance
+                </SelectOption>
+              </Select>
             </SelectDiv>
           </SelectsDiv>
-          <Games genreData={genreData} />
+          <Games
+            searchQuery={searchQuery}
+            genreData={genreData}
+            selectedPlatform={selectedPlatform}
+          />
         </ContentDiv>
       ) : (
         <EmptyDiv></EmptyDiv>

@@ -14,23 +14,31 @@ const SBandContentBody = styled.div`
 interface GenreData {
   id: number;
   name: string;
+  games: any[];
 }
 
 function App() {
   const [count, setCount] = useState(0);
   const [darkModeToggle, setDarkModeToggle] = useState(false);
-  const [genreData, setGenreData] = useState({
-    genreId: 0,
-    genreName: "",
+  const [searchQuery, setSearchQuery] = useState("");
+  const [genreData, setGenreData] = useState<GenreData>({
+    id: 0,
+    name: "",
+    games: [],
   });
 
   useEffect(() => {}, [darkModeToggle]);
 
+  const handleSearchCallback = (search: string) => {
+    setSearchQuery(search);
+  };
+
   const handleGenreCallback = (data: GenreData) => {
     const newGenreData = {
       ...genreData,
-      genreId: data.id,
-      genreName: data.name,
+      id: data.id,
+      name: data.name,
+      games: data.games,
     };
     setGenreData(newGenreData);
   };
@@ -39,6 +47,7 @@ function App() {
     <>
       <NavBar
         darkMode={darkModeToggle}
+        searchQueryCallback={handleSearchCallback}
         onSelectItem={() => {
           setDarkModeToggle(!darkModeToggle);
         }}
@@ -48,7 +57,11 @@ function App() {
           darkMode={darkModeToggle}
           genreCallback={handleGenreCallback}
         />
-        <Content darkMode={darkModeToggle} genreData={genreData} />
+        <Content
+          darkMode={darkModeToggle}
+          searchQuery={searchQuery}
+          genreData={genreData}
+        />
       </SBandContentBody>
     </>
   );
