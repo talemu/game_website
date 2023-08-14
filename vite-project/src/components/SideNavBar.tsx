@@ -86,7 +86,6 @@ const SideNavBar = ({ darkMode, genreCallback }: Props) => {
           // setData(response.data);
         })
         .catch((err: Error) => setError(err.message));
-      console.log(darkMode);
     }
   }, [response]);
 
