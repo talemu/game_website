@@ -94,6 +94,14 @@ const SideNavBar = ({ darkMode, genreCallback }: Props) => {
     genreCallback(data);
   };
 
+  const AllGenres = {
+    id: 0,
+    name: "",
+    image_background:
+      "https://www.pcgamesn.com/wp-content/sites/pcgamesn/2022/05/best-free-pc-games-fortnite.jpg",
+    games: [],
+  };
+
   return (
     <>
       {show ? (
@@ -102,6 +110,14 @@ const SideNavBar = ({ darkMode, genreCallback }: Props) => {
           <SideNav style={darkMode ? darkModeBackground : lightModeBackground}>
             <SideNavHeader>Genres</SideNavHeader>
             <SideBarUL>
+              <SideBarItemDiv
+                key={"all"}
+                onClick={() => handleGenreSelect(AllGenres)}
+              >
+                {" "}
+                <Image src={AllGenres.image_background} />
+                <SideBarLI>All </SideBarLI>
+              </SideBarItemDiv>
               {results.map((item: Genre) => (
                 <SideBarItemDiv
                   key={item.id}

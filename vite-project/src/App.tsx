@@ -41,6 +41,7 @@ function App() {
       games: data.games,
     };
     setGenreData(newGenreData);
+    console.log(newGenreData);
   };
 
   return (

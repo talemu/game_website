@@ -14,7 +14,7 @@ import {
   RatingDivRed,
   RatingDivYellow,
 } from "../styles/themes";
-import { Tooltip } from "@chakra-ui/react";
+import { Spinner, Tooltip } from "@chakra-ui/react";
 
 const GamesDiv = styled.div`
   display: flex;
@@ -55,6 +55,12 @@ const PlatformImage = styled.img`
   padding: 0em 0.1em;
 `;
 
+const SpinnerDiv = styled.div`
+  padding: 1em;
+  width: 5em;
+  height: 5em;
+`;
+
 interface Props {
   searchQuery: string;
   genreData: any;
@@ -77,12 +83,15 @@ const Games = ({ searchQuery, genreData, selectedPlatform }: Props) => {
   const [results, setResults] = useState<GameData[]>();
   const genreIds = genreData.games.map((item: { id: any }) => item.id);
   const [emptySearch, setEmptySearch] = useState(false);
+  const [spin, setSpin] = useState(true);
 
   useEffect(() => {
+    setSpin(true);
     setEmptySearch(false);
     const { request, cancel } = gamesService.getAll();
     request
       .then((response: Response) => {
+        console.log(genreData);
         var newResults = (response.data as { results: GameData[] }).results;
         if (searchQuery != "") {
           newResults = newResults.filter((item) => {
@@ -107,6 +116,7 @@ const Games = ({ searchQuery, genreData, selectedPlatform }: Props) => {
           newResults.length == 0 ? (console.log(), setEmptySearch(true)) : null;
         }
         setResults(newResults);
+        setSpin(false);
       })
       .catch((err) => console.log(err));
   }, [searchQuery, genreData, selectedPlatform]);
@@ -150,7 +160,6 @@ const Games = ({ searchQuery, genreData, selectedPlatform }: Props) => {
         </RatingDiv>
       </PlatformDiv>
     );
-    // {newItem.map((item) => item.platform.name)}
   };
 
   return (
@@ -159,15 +168,23 @@ const Games = ({ searchQuery, genreData, selectedPlatform }: Props) => {
         <GamesDiv>Sorry there are no games that fit your search</GamesDiv>
       ) : (
         <GamesDiv>
-          {results?.map((item) => (
-            <GameCardDiv key={item.name}>
-              <GameImage src={item.background_image}></GameImage>
-              <GameContent>
-                {handlePlatforms(item)}
-                <NameDiv>{item.name}</NameDiv>
-              </GameContent>
-            </GameCardDiv>
-          ))}
+          {!spin ? (
+            <GamesDiv>
+              {results?.map((item) => (
+                <GameCardDiv key={item.name}>
+                  <GameImage src={item.background_image}></GameImage>
+                  <GameContent>
+                    {handlePlatforms(item)}
+                    <NameDiv>{item.name}</NameDiv>
+                  </GameContent>
+                </GameCardDiv>
+              ))}
+            </GamesDiv>
+          ) : (
+            <SpinnerDiv>
+              <Spinner size="xl" />
+            </SpinnerDiv>
+          )}
         </GamesDiv>
       )}
     </>

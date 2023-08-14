@@ -53,13 +53,13 @@ const Content = ({ darkMode, searchQuery, genreData }: Props) => {
   const [error, setError] = useState<String>("");
   const [show, setShow] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState("all");
-  console.log(searchQuery);
 
   useEffect(() => {
     const { request, cancel } = platformsService.getAll();
     if (!platformsResponse) {
       request
         .then((response: Response) => {
+          console.log("found2");
           const newResults = (
             response.data as { results: PlatformParentItem[] }
           ).results;
@@ -92,7 +92,14 @@ const Content = ({ darkMode, searchQuery, genreData }: Props) => {
                 }
                 size="sm"
               >
-                <SelectOption value="all">All Platforms</SelectOption>
+                <SelectOption
+                  value="all"
+                  style={
+                    darkMode ? darkModeBackgroundSelect : lightModeBackground
+                  }
+                >
+                  All Platforms
+                </SelectOption>
                 {platformsResponse?.map((item: PlatformParentItem) => (
                   <SelectOption
                     key={item.id}
