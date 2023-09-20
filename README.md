@@ -8,3 +8,4 @@ Key Features include:
  - Search Bar to query games
  - SideBar that gives you games that fit the selected category
  - Games can be quiered by console platform
+ - DarkMode Toggle
